@@ -18,23 +18,45 @@ function App() {
 
         const columnName = [];
         const arrayStrings = [];
-        let counter = '';
 
-        for (const el in array) {
-          console.log(array[el]);
-          if (array[el][0].includes("!ref")) {
+        for (const el in ws.Financials) {
+          const element = ws.Financials[el]
+          console.log(ws.Financials[el]);
+          if (el.includes("!ref")) {
             continue;
           }
 
-          if (array[el][0].includes("1") && array[el][0].length == 2) {
-            columnName.push(array[el][1].v);
+          if (el.includes("1") && el.length == 2) {
+            columnName.push(element.w);
           }
-          // else{
-            
-          // }
+          else{
+            arrayStrings.push(element.w)
+          }
+
+        }
+        // console.log(columnName);
+        // console.log(arrayStrings);
+
+        const parser = (columns, strings) => {
+          const array = []
+          let counter = 0;
+          let object = {}
+          for (let i = 0; i < strings.length; i++) {
+            object[columns[counter]] = strings[i]
+            counter++
+            if (counter == columns.length) {
+              counter = 0
+              array.push(object)
+              object = {}
+            }
+          }
+          return array
         }
 
-        console.log(columnName);
+        const mainArray = parser(columnName, arrayStrings)
+
+        console.log(mainArray);
+
 
         // changeText(JSON.stringify(ws.Financials));
       };
